@@ -39,18 +39,33 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Фото</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${candidates}" var="can">
-                    <tr>
-                        <td>
-                            <a href='<c:url value="/candidate/edit.jsp?id=${can.id}"/>'>
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <c:out value="${can.name}"/>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <a href='<c:url value="/candidate/edit.jsp?id=${can.id}"/>'>
+                                    <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <c:out value="${can.name}"/>
+                            </td>
+                            <td>
+                                <img src="<c:url value='/photo_download?userId=${can.id}'/>" width="100px"
+                                     height="100px"/>
+                                <br>
+                                <a href='<c:url value="/photo_upload?userId=${can.id}"/>'>
+                                    <i class="fa fa-plus mr-2"></i>
+                                </a>
+                                Добавить
+                                <br>
+                                <a href='<c:url value="/photo_delete?userId=${can.id}"/>'>
+                                    <i class="fa fa-trash mr-2"></i>
+                                </a>
+                                Удалить
+                            </td>
+                        </tr>
                     </c:forEach>
                     </tbody>
                 </table>
