@@ -105,7 +105,7 @@ public class PsqlStore implements Store {
 
     @Override
     public void save(User user) {
-        if (user.getEmail() == null) {
+        if (findUserByEmail(user.getEmail()) == null) {
             create(user);
         } else {
             update(user);
