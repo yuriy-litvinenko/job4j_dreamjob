@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<h1>My First Bootstrap Page</h1>
+<div class="container-fluid">
+    <form>
+        <div class="form-group">
+            <label for="inputName">Имя</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Введите имя">
+        </div>
+        <div class="form-group">
+            <label for="inputLastName">Фамилия</label>
+            <input type="text" class="form-control" id="inputLastName" placeholder="Введите фамилию">
+        </div>
+        <div class="col-auto my-1">
+            <label for="genderSelect">Пол</label>
+            <select class="custom-select mr-sm-2" id="genderSelect">
+                <option value="1">Мужской</option>
+                <option value="2">Женский</option>
+            </select>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="inputDescription">Описание</label>
+            <input type="text" class="form-control" id="inputDescription" placeholder="Введите описание">
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+</div>
+<br>
+<div class="container-fluid">
+    <b>Список участников</b>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Пол</th>
+            <th scope="col">Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Иван</td>
+            <td>Иванов</td>
+            <td>Мужской</td>
+            <td>Отсутствует</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Николай</td>
+            <td>Мотылев</td>
+            <td>Мужской</td>
+            <td>Отсутствует</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Виктор</td>
+            <td>Лапотников</td>
+            <td>Мужской</td>
+            <td>Отсутствует</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
