@@ -5,6 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function validate() {
+            let inputName = $('#inputName');
+            let inputLastName = $('#inputLastName');
+            let inputDesc = $('#inputDesc');
+            if (inputName.val() === '') {
+                alert('Необходимо заполнить поле "' + inputName.prev('label').html() + '"');
+            } else if (inputLastName.val() === '') {
+                alert('Необходимо заполнить поле "' + inputLastName.prev('label').html() + '"');
+            } else if (inputDesc.val() === '') {
+                alert('Необходимо заполнить поле "' + inputDesc.prev('label').html() + '"');
+            }
+            return false;
+        }
+    </script>
 </head>
 <body>
 <h1>My First Bootstrap Page</h1>
@@ -27,10 +43,10 @@
         </div>
         <br>
         <div class="form-group">
-            <label for="inputDescription">Описание</label>
-            <input type="text" class="form-control" id="inputDescription" placeholder="Введите описание">
+            <label for="inputDesc">Описание</label>
+            <input type="text" class="form-control" id="inputDesc" placeholder="Введите описание">
         </div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <button type="submit" class="btn btn-primary" onclick="return validate()">Добавить</button>
     </form>
 </div>
 <br>
@@ -71,6 +87,5 @@
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
