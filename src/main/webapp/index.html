@@ -20,6 +20,16 @@
             }
             return false;
         }
+        function addRow() {
+            const lastRow = $('#tableUsers tr:last');
+            const name = $('#inputName').val();
+            const lastName = $('#inputLastName').val();
+            const gender = $('#genderSelect option:selected').text();
+            const desc = $('#inputDesc').val();
+            const numRow = +(lastRow.find('th').text()) + 1;
+            lastRow.after('<tr><th scope="row">' + numRow + '</th><td>' + name +'</td><td>' + lastName +'</td><td>' + gender +'</td><td>' + desc +'</td></tr>');
+            return false;
+        }
     </script>
 </head>
 <body>
@@ -46,13 +56,14 @@
             <label for="inputDesc">Описание</label>
             <input type="text" class="form-control" id="inputDesc" placeholder="Введите описание">
         </div>
-        <button type="submit" class="btn btn-primary" onclick="return validate()">Добавить</button>
+        <button type="submit" class="btn btn-primary" onclick="return validate()">Проверка данных</button>
+        <button type="submit" class="btn btn-primary" onclick="return addRow()">Добавить в таблицу</button>
     </form>
 </div>
 <br>
 <div class="container-fluid">
     <b>Список участников</b>
-    <table class="table">
+    <table class="table" id="tableUsers">
         <thead>
         <tr>
             <th scope="col">#</th>
