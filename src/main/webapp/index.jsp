@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,6 +27,9 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
             </li>
             <li class="nav-item">
@@ -38,7 +42,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
             </li>
         </ul>
     </div>
@@ -48,6 +52,17 @@
                 Сегодняшние вакансии.
             </div>
             <div class="card-body">
+                <table class="table">
+                    <tbody>
+                    <c:forEach items="${posts}" var="post">
+                        <tr>
+                            <td>
+                                <c:out value="${post.name}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -57,6 +72,17 @@
                 Сегодняшние кандидаты.
             </div>
             <div class="card-body">
+                <table class="table">
+                    <tbody>
+                    <c:forEach items="${candidates}" var="can">
+                        <tr>
+                            <td>
+                                <c:out value="${can.name}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

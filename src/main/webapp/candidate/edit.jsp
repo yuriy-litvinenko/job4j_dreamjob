@@ -24,18 +24,48 @@
 
     <title>Работа мечты</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/dreamjob/city',
+            dataType: 'json'
+        }).done(function (data) {
+            for (let city of data) {
+                    $('#cityList').append(`<option value="${city.id}">${city.name}</option>`);
+            }
+        }).fail(function (err) {
+            console.log(err);
+        });
+    });
+
+    function validate() {
+        let inputName = $('#inputName');
+        if (inputName.val() === '') {
+            alert('Необходимо заполнить поле "Имя"');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>
 <body>
 <%
     String id = request.getParameter("id");
-    Candidate can = new Candidate(0, "");
+    Candidate can = new Candidate(0, "", 0, new java.sql.Date(System.currentTimeMillis()));
     if (id != null) {
         can = PsqlStore.instOf().findCandidateById(Integer.parseInt(id));
     }
 %>
-
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
             </li>
@@ -66,9 +96,12 @@
                 <form action="<%=request.getContextPath()%>/candidates.do?id=<%=can.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
+                        <input type="text" class="form-control" id="inputName" name="name" value="<%=can.getName()%>">
+                        <br>
+                        <label>Город</label>
+                        <select id="cityList" name="city_id"></select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>
             </div>
         </div>

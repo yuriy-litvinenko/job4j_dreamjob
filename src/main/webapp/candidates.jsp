@@ -28,6 +28,9 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
             </li>
             <li class="nav-item">
@@ -64,7 +67,13 @@
                                 <a href='<c:url value="/candidate/edit.jsp?id=${can.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
-                                <c:out value="${can.name}"/>
+                                <c:out value="${can.name}"/>,&ensp;
+
+                                <c:forEach items="${cities}" var="city">
+                                    <c:if test = "${city.id == can.cityId}">
+                                        <c:out value = "${city.name}"/>
+                                    </c:if>
+                                </c:forEach>
                             </td>
                             <td>
                                 <img src="<c:url value='/photo_download?userId=${can.id}'/>" width="100px"

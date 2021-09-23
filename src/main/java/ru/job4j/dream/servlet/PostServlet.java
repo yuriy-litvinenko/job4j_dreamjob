@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 
 public class PostServlet extends HttpServlet {
     @Override
@@ -23,7 +24,8 @@ public class PostServlet extends HttpServlet {
         PsqlStore.instOf().save(
                 new Post(
                         Integer.parseInt(req.getParameter("id")),
-                        req.getParameter("name")
+                        req.getParameter("name"),
+                        new Date(System.currentTimeMillis())
                 )
         );
         resp.sendRedirect(req.getContextPath() + "/posts.do");

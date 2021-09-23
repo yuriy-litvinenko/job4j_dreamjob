@@ -24,10 +24,23 @@
 
     <title>Работа мечты</title>
 </head>
+<script>
+
+    function validate() {
+        let inputName = $('#inputName');
+        if (inputName.val() === '') {
+            alert('Необходимо заполнить поле "Имя"');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "");
+    Post post = new Post(0, "", new java.sql.Date(System.currentTimeMillis()));
     if (id != null) {
         post = PsqlStore.instOf().findPostById(Integer.parseInt(id));
     }
@@ -35,6 +48,9 @@
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
             </li>
@@ -65,9 +81,9 @@
                 <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                        <input type="text" class="form-control" id="inputName" name="name" value="<%=post.getName()%>">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>
             </div>
         </div>

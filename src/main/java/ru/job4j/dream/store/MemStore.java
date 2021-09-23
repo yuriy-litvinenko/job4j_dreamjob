@@ -1,10 +1,14 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,12 +30,12 @@ public class MemStore implements Store {
     private static final AtomicInteger USER_ID = new AtomicInteger(2);
 
     private MemStore() {
-        posts.put(1, new Post(1, "Junior Java Job"));
-        posts.put(2, new Post(2, "Middle Java Job"));
-        posts.put(3, new Post(3, "Senior Java Job"));
-        candidates.put(1, new Candidate(1, "Junior Java"));
-        candidates.put(2, new Candidate(2, "Middle Java"));
-        candidates.put(3, new Candidate(3, "Senior Java"));
+        posts.put(1, new Post(1, "Junior Java Job", new Date(System.currentTimeMillis())));
+        posts.put(2, new Post(2, "Middle Java Job", new Date(System.currentTimeMillis())));
+        posts.put(3, new Post(3, "Senior Java Job", new Date(System.currentTimeMillis())));
+        candidates.put(1, new Candidate(1, "Junior Java", 1, new Date(System.currentTimeMillis())));
+        candidates.put(2, new Candidate(2, "Middle Java", 2, new Date(System.currentTimeMillis())));
+        candidates.put(3, new Candidate(3, "Senior Java", 3, new Date(System.currentTimeMillis())));
         users.put("admin@mail.ru", new User(1, "Admin", "admin@mail.ru", "Admin"));
     }
 
@@ -77,5 +81,24 @@ public class MemStore implements Store {
     @Override
     public User findUserByEmail(String email) {
         return users.get(email);
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        cities.add(new City(1, "Москва"));
+        cities.add(new City(2, "Берлин"));
+        cities.add(new City(3, "Прага"));
+        return cities;
+    }
+
+    @Override
+    public Object findLastDayCandidates() {
+        return null;
+    }
+
+    @Override
+    public Object findLastDayPosts() {
+        return null;
     }
 }

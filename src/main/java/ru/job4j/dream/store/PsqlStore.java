@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
@@ -59,7 +60,7 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(it.getInt("id"), it.getString("name")));
+                    posts.add(new Post(it.getInt("id"), it.getString("name"), it.getDate("date_create")));
                 }
             }
         } catch (Exception e) {
@@ -76,7 +77,8 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getInt("city_id"), it.getDate("date_create")));
                 }
             }
         } catch (Exception e) {
@@ -114,7 +116,8 @@ public class PsqlStore implements Store {
 
     private Post create(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name, date_create) VALUES (?, now())",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.execute();
@@ -131,9 +134,12 @@ public class PsqlStore implements Store {
 
     private Candidate create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement(
+                     "INSERT INTO candidate(name, city_id, date_create) VALUES (?, ?, now())",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getCityId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -148,7 +154,8 @@ public class PsqlStore implements Store {
 
     private User create(User user) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -211,7 +218,7 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    post = new Post(it.getInt("id"), it.getString("name"));
+                    post = new Post(it.getInt("id"), it.getString("name"), it.getDate("date_create"));
                 }
             }
         } catch (Exception e) {
@@ -229,7 +236,8 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    candidate = new Candidate(it.getInt("id"), it.getString("name"));
+                    candidate = new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getInt("city_id"), it.getDate("date_create"));
                 }
             }
         } catch (Exception e) {
@@ -257,5 +265,59 @@ public class PsqlStore implements Store {
             LOGGER.error(e.getMessage(), e);
         }
         return user;
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM city")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    cities.add(new City(it.getInt("id"), it.getString("name")));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return cities;
+    }
+
+    @Override
+    public Collection<Candidate> findLastDayCandidates() {
+        List<Candidate> candidates = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM candidate WHERE date_create > (now() - interval '24 hours')")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"),
+                            it.getInt("city_id"), it.getDate("date_create")));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return candidates;
+    }
+
+    @Override
+    public Collection<Post> findLastDayPosts() {
+        List<Post> posts = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM post WHERE date_create > (now() - interval '24 hours')")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    posts.add(new Post(it.getInt("id"), it.getString("name"), it.getDate("date_create")));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return posts;
     }
 }
