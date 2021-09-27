@@ -29,16 +29,17 @@
 
     $(document).ready(function () {
         $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8080/dreamjob/city',
-            dataType: 'json'
-        }).done(function (data) {
-            for (let city of data) {
-                    $('#cityList').append(`<option value="${city.id}">${city.name}</option>`);
+            type: "GET",
+            url: "http://localhost:8080/dreamjob/city",
+            dataType: "json",
+            success: function (data) {
+                let cities = "";
+                for (let i = 0; i < data.length; i++) {
+                    cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
+                }
+                $('#cityList').html(cities);
             }
-        }).fail(function (err) {
-            console.log(err);
-        });
+        })
     });
 
     function validate() {
