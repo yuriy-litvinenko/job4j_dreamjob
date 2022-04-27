@@ -2,3 +2,5 @@
 /.idea/
 /target/
 /dreamjob.log
+/testdb.mv.db
+/testdb.trace.db

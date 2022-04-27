@@ -9,6 +9,8 @@ import ru.job4j.dream.model.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,13 +25,16 @@ public class PsqlStore implements Store {
 
     private PsqlStore() {
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(
-                new FileReader("db.properties")
-        )) {
-            cfg.load(io);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+
+        InputStream input;
+        try {
+            input = ClassLoader.getSystemClassLoader().getResourceAsStream("db.properties");
+            cfg.load(input);
+
+        } catch (IOException io) {
+            io.printStackTrace();
         }
+
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (Exception e) {
